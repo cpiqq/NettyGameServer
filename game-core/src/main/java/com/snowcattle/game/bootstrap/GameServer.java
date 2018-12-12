@@ -69,7 +69,7 @@ public class GameServer extends AbstractServerService {
      *
      * @throws Exception
      */
-    public void init(String configFile) throws Exception {
+    private void init(String configFile) throws Exception {
         logger.info("Begin to initialize spring");
         initSpring();
         logger.info("Begin to initialize GlobalManager");
@@ -78,7 +78,7 @@ public class GameServer extends AbstractServerService {
         this.initServer();
     }
 
-    public void initSpring()throws Exception{
+    private void initSpring()throws Exception{
         ClassPathXmlApplicationContext classPathXmlApplicationContext = new ClassPathXmlApplicationContext(new String[]{"bean/*.xml"});
         Runtime.getRuntime().addShutdownHook(new Thread(new ShutdownHook(classPathXmlApplicationContext)));
     }
@@ -92,11 +92,12 @@ public class GameServer extends AbstractServerService {
      *
      * @throws Exception
      */
-    public void start() throws Exception {
+    private void start() throws Exception {
 
         logger.info("Begin to start GlobalManager");
         globalManager.start();
         logger.info("GlobalManager started");
+
         LocalMananger.getInstance().add(localNetService, LocalNetService.class);
         localNetService.startup();
         logger.info("local net Server started");
@@ -106,7 +107,7 @@ public class GameServer extends AbstractServerService {
         GameServerRuntime.setOpenOn();
     }
 
-    public void addShutdownHook(){
+    private void addShutdownHook(){
         // 注册停服监听器，用于执行资源的销毁等停服时的处理工作
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             logger.info("Begin to shutdown Game Server ");
